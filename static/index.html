@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axion — Stress Test Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 40 40" fill="none">
+                            <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2" />
+                            <path d="M20 8 L20 32 M8 20 L32 20" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" />
+                            <circle cx="20" cy="20" r="8" stroke="currentColor" stroke-width="2"
+                                stroke-dasharray="4 4" />
+                        </svg>
+                    </div>
+                    <span class="logo-text">Axion</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-view="dashboard">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-view="history">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>History</span>
+                </a>
+                <a href="#" class="nav-item" data-view="settings">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="nav-item" data-view="docs">
+                    <i class="fa-solid fa-book"></i>
+                    <span>Documentation</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="dev-info">
+                    <div class="dev-avatar">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <div class="dev-details">
+                        <span class="dev-name">Elijah Abolaji</span>
+                        <span class="dev-version">v0.1.0-alpha</span>
+                    </div>
+                </div>
+                <div class="sidebar-links">
+                    <a href="https://github.com/toyosee" target="_blank" class="sidebar-link" title="GitHub">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    <a href="#" class="sidebar-link" id="helpLink" title="Help">
+                        <i class="fa-solid fa-circle-question"></i>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Overlay for mobile sidebar -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="breadcrumb">
+                        <span id="breadcrumbMain">Dashboard</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                        <span class="breadcrumb-active" id="breadcrumbSub">Live Test</span>
+                    </div>
+                </div>
+                <div class="top-bar-right">
+                    <div class="status-indicator" id="globalStatus">
+                        <span class="status-dot"></span>
+                        <span class="status-text">System Ready</span>
+                    </div>
+                    <button class="icon-btn" id="themeToggle" title="Toggle theme">
+                        <i class="fa-solid fa-sun"></i>
+                    </button>
+                    <div class="notification-wrapper">
+                        <button class="icon-btn" id="notificationBtn" title="Notifications">
+                            <i class="fa-solid fa-bell"></i>
+                            <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+                        </button>
+                        <!-- Notification Dropdown -->
+                        <div class="notification-dropdown" id="notificationDropdown">
+                            <div class="notification-header">
+                                <span>Notifications</span>
+                                <button class="notification-clear" id="notificationClear">Clear all</button>
+                            </div>
+                            <div class="notification-list" id="notificationList">
+                                <div class="notification-empty">
+                                    <i class="fa-solid fa-bell-slash"></i>
+                                    <span>No notifications yet</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard View -->
+            <div class="view-container active" id="view-dashboard">
+
+                <!-- Welcome Overlay -->
+                <div class="welcome-overlay" id="welcomeOverlay">
+                    <div class="welcome-card">
+                        <div class="welcome-pulse">
+                            <svg viewBox="0 0 120 120" fill="none">
+                                <circle cx="60" cy="60" r="50" stroke="currentColor" stroke-width="2" opacity="0.3" />
+                                <circle cx="60" cy="60" r="30" stroke="currentColor" stroke-width="2" opacity="0.6" />
+                                <circle cx="60" cy="60" r="10" fill="currentColor" />
+                                <path d="M60 10 L60 50 M60 70 L60 110 M10 60 L50 60 M70 60 L110 60"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                        <h1 class="welcome-title">Welcome to Axion</h1>
+                        <p class="welcome-subtitle">
+                            Stress-test your infrastructure with confidence
+                        </p>
+                        <div class="welcome-features">
+                            <div class="welcome-feature">
+                                <i class="fa-solid fa-bolt"></i>
+                                <div>
+                                    <strong>Simulate Traffic</strong>
+                                    <span>Send thousands of concurrent requests to your endpoints</span>
+                                </div>
+                            </div>
+                            <div class="welcome-feature">
+                                <i class="fa-solid fa-heart-pulse"></i>
+                                <div>
+                                    <strong>Monitor Heartbeat</strong>
+                                    <span>Watch your system's vitals in real-time</span>
+                                </div>
+                            </div>
+                            <div class="welcome-feature">
+                                <i class="fa-solid fa-chart-line"></i>
+                                <div>
+                                    <strong>Analyze Performance</strong>
+                                    <span>Track latency, throughput, and error rates live</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="welcome-actions">
+                            <button class="btn-primary welcome-start-btn" id="welcomeStartBtn">
+                                <i class="fa-solid fa-play"></i>
+                                Configure Your First Test
+                            </button>
+                            <span class="welcome-hint">
+                                Or use the sidebar to explore &nbsp;
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </span>
+                        </div>
+                        <div class="welcome-footer">
+                            <span>Developed By Barterverse Technologies. Ltd.</span>
+                            <span class="footer-separator">•</span>
+                            <span>v0.1.0-alpha</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Control Panel -->
+                <section class="control-section">
+                    <div class="section-header">
+                        <h2>Test Configuration</h2>
+                        <span class="section-badge">Target Endpoint</span>
+                    </div>
+
+                    <div class="control-grid">
+                        <div class="control-group url-group">
+                            <label>
+                                <i class="fa-solid fa-link"></i>
+                                Target URL
+                            </label>
+                            <div class="url-input-wrapper">
+                                <input type="text" id="targetUrl" value="https://httpbin.org/get"
+                                    placeholder="https://your-api.com/endpoint">
+                                <button class="validate-btn" id="validateUrl" title="Validate URL">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label>
+                                <i class="fa-solid fa-bolt"></i>
+                                Workers
+                            </label>
+                            <div class="slider-group">
+                                <input type="range" id="concurrencySlider" min="1" max="100" value="10">
+                                <input type="number" id="concurrency" value="10" min="1" max="1000">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label>
+                                <i class="fa-solid fa-stopwatch"></i>
+                                Delay (ms)
+                            </label>
+                            <div class="slider-group">
+                                <input type="range" id="delaySlider" min="0" max="1000" value="100">
+                                <input type="number" id="requestDelay" value="100" min="0" max="10000">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label>
+                                <i class="fa-solid fa-hourglass-half"></i>
+                                Duration (s)
+                            </label>
+                            <input type="number" id="duration" value="0" min="0" class="duration-input">
+                        </div>
+                    </div>
+
+                    <div class="action-bar">
+                        <button id="startBtn" class="btn-primary">
+                            <i class="fa-solid fa-play"></i>
+                            Start Test
+                        </button>
+                        <button id="stopBtn" class="btn-danger" disabled>
+                            <i class="fa-solid fa-stop"></i>
+                            Stop
+                        </button>
+                        <button id="resetBtn" class="btn-secondary">
+                            <i class="fa-solid fa-rotate"></i>
+                            Reset
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Heartbeat Monitor -->
+                <section class="monitor-section">
+                    <div class="section-header">
+                        <h2>
+                            <i class="fa-solid fa-heart-pulse pulse-icon"></i>
+                            Live Heartbeat
+                        </h2>
+                        <div class="heartbeat-legend">
+                            <span class="legend-item">
+                                <span class="legend-dot healthy"></span>
+                                Healthy
+                            </span>
+                            <span class="legend-item">
+                                <span class="legend-dot warning"></span>
+                                Degraded
+                            </span>
+                            <span class="legend-item">
+                                <span class="legend-dot critical"></span>
+                                Critical
+                            </span>
+                        </div>
+                    </div>
+                    <div class="heartbeat-container">
+                        <canvas id="heartbeatCanvas"></canvas>
+                        <div class="heartbeat-overlay">
+                            <span class="heartbeat-bpm" id="heartbeatBPM">--</span>
+                            <span class="heartbeat-label">BPM</span>
+                        </div>
+                    </div>
+                    <div class="heartbeat-status" id="heartbeatStatus">
+                        <i class="fa-solid fa-circle"></i>
+                        <span>Waiting for test to begin...</span>
+                    </div>
+                </section>
+
+                <!-- Metrics Grid -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <i class="fa-solid fa-gauge-high"></i>
+                            <span>Throughput</span>
+                        </div>
+                        <div class="metric-body">
+                            <div class="metric-primary" id="rps">0</div>
+                            <div class="metric-unit">requests/sec</div>
+                        </div>
+                        <div class="metric-footer">
+                            <span>Total: <strong id="totalRequests">0</strong></span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card success-card">
+                        <div class="metric-header">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Success Rate</span>
+                        </div>
+                        <div class="metric-body">
+                            <div class="metric-primary success" id="successRate">0%</div>
+                            <div class="metric-unit">
+                                <span id="successCount">0</span> / <span id="totalForRate">0</span>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill success-fill" id="successBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card error-card">
+                        <div class="metric-header">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>Errors</span>
+                        </div>
+                        <div class="metric-body">
+                            <div class="metric-primary error" id="errorRate">0%</div>
+                            <div class="metric-unit">
+                                <span id="errorCount">0</span> errors
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill error-fill" id="errorBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card latency-card">
+                        <div class="metric-header">
+                            <i class="fa-solid fa-microchip"></i>
+                            <span>Latency (ms)</span>
+                        </div>
+                        <div class="latency-grid">
+                            <div class="latency-item">
+                                <span class="latency-label">Avg</span>
+                                <span class="latency-value" id="avgLatency">0</span>
+                            </div>
+                            <div class="latency-item">
+                                <span class="latency-label">Min</span>
+                                <span class="latency-value" id="minLatency">0</span>
+                            </div>
+                            <div class="latency-item">
+                                <span class="latency-label">Max</span>
+                                <span class="latency-value" id="maxLatency">0</span>
+                            </div>
+                            <div class="latency-item highlight">
+                                <span class="latency-label">P99</span>
+                                <span class="latency-value" id="p99Latency">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card system-card">
+                        <div class="metric-header">
+                            <i class="fa-solid fa-server"></i>
+                            <span>Engine Vitals</span>
+                        </div>
+                        <div class="vitals-grid">
+                            <div class="vital-item">
+                                <i class="fa-solid fa-memory"></i>
+                                <div class="vital-info">
+                                    <span class="vital-value" id="memory">0</span>
+                                    <span class="vital-unit">MB</span>
+                                </div>
+                            </div>
+                            <div class="vital-item">
+                                <i class="fa-solid fa-microchip"></i>
+                                <div class="vital-info">
+                                    <span class="vital-value" id="goroutines">0</span>
+                                    <span class="vital-unit">routines</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="metric-footer">
+                            <span>Workers: <strong id="activeWorkers">0</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History View -->
+            <div class="view-container" id="view-history">
+                <section class="history-hero">
+                    <div class="history-hero-content">
+                        <h1><i class="fa-solid fa-clock-rotate-left"></i> Test History</h1>
+                        <p>Review and analyze past stress test results</p>
+                    </div>
+                </section>
+
+                <div class="history-toolbar" id="historyToolbar">
+                    <div class="history-count">
+                        <span id="historyCount">0</span> tests recorded
+                    </div>
+                    <button class="btn-secondary" id="clearHistoryBtn">
+                        <i class="fa-solid fa-trash"></i>
+                        Clear All
+                    </button>
+                </div>
+
+                <div class="history-list" id="historyList">
+                    <div class="placeholder-state" id="historyEmpty">
+                        <i class="fa-solid fa-inbox"></i>
+                        <span>No test history yet. Run your first test to see results here.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings View -->
+            <div class="view-container" id="view-settings">
+                <section class="placeholder-section">
+                    <div class="placeholder-icon">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <h2>Settings</h2>
+                    <p>Configure default test parameters and notification preferences.</p>
+                    <div class="settings-placeholder">
+                        <div class="setting-item">
+                            <span>Default Concurrency</span>
+                            <input type="number" value="10" min="1" max="1000" class="setting-input">
+                        </div>
+                        <div class="setting-item">
+                            <span>Default Delay (ms)</span>
+                            <input type="number" value="100" min="0" max="10000" class="setting-input">
+                        </div>
+                        <div class="setting-item">
+                            <span>Auto-open Browser</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Documentation View -->
+<!-- Documentation View -->
+<div class="view-container" id="view-docs">
+    <section class="docs-hero">
+        <div class="docs-hero-content">
+            <h1>Documentation</h1>
+            <p>Everything you need to master stress testing with Axion</p>
+            <div class="docs-search">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" placeholder="Search documentation..." id="docsSearch">
+            </div>
+        </div>
+    </section>
+
+    <div class="docs-grid">
+        <!-- Getting Started -->
+        <div class="doc-card" data-doc="getting-started">
+            <div class="doc-card-header">
+                <i class="fa-solid fa-rocket"></i>
+                <h3>Getting Started</h3>
+            </div>
+            <p>Set up and run your first stress test in under a minute</p>
+            <button class="doc-expand-btn">
+                <span>Read more</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="doc-card-content">
+                <h4>Quick Start Guide</h4>
+                <ol>
+                    <li><strong>Enter a target URL</strong> — The endpoint you want to test (e.g.,
+                        <code>https://your-api.com/health</code>)</li>
+                    <li><strong>Set concurrency</strong> — How many simultaneous workers will send requests. Start with
+                        10-50 for a gentle warm-up</li>
+                    <li><strong>Adjust delay</strong> — Time between requests per worker in milliseconds. Lower = more
+                        aggressive</li>
+                    <li><strong>Click Start Test</strong> — Watch the heartbeat monitor come alive</li>
+                </ol>
+                <div class="doc-tip">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <span><strong>Pro tip:</strong> Use <code>https://httpbin.org/get</code> as a safe target to test
+                        Axion itself without hitting your own servers.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Understanding Concurrency -->
+        <div class="doc-card" data-doc="concurrency">
+            <div class="doc-card-header">
+                <i class="fa-solid fa-bolt"></i>
+                <h3>Concurrency & Workers</h3>
+            </div>
+            <p>How concurrent workers simulate real-world traffic patterns</p>
+            <button class="doc-expand-btn">
+                <span>Read more</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="doc-card-content">
+                <h4>Worker Model</h4>
+                <p>Each worker is a goroutine that continuously sends requests with a configurable delay. Workers
+                    operate independently, simulating multiple users hitting your endpoint simultaneously.</p>
+
+                <h4>How to Choose Concurrency</h4>
+                <div class="doc-table-wrapper">
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>Scenario</th>
+                                <th>Workers</th>
+                                <th>Delay</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Smoke test</td>
+                                <td>1-5</td>
+                                <td>500-1000ms</td>
+                            </tr>
+                            <tr>
+                                <td>Average load</td>
+                                <td>20-50</td>
+                                <td>100-200ms</td>
+                            </tr>
+                            <tr>
+                                <td>Stress test</td>
+                                <td>100-500</td>
+                                <td>0-50ms</td>
+                            </tr>
+                            <tr>
+                                <td>Spike test</td>
+                                <td>1000+</td>
+                                <td>0ms</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="doc-formula">
+                    <span class="formula-label">Estimated RPS</span>
+                    <code>RPS ≈ Workers ÷ (Delay in seconds)</code>
+                    <small>Example: 50 workers with 100ms delay ≈ 500 RPS</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Heartbeat Monitor -->
+        <div class="doc-card" data-doc="heartbeat">
+            <div class="doc-card-header">
+                <i class="fa-solid fa-heart-pulse"></i>
+                <h3>Heartbeat Monitor</h3>
+            </div>
+            <p>Interpreting the real-time ECG visualization of your system's health</p>
+            <button class="doc-expand-btn">
+                <span>Read more</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="doc-card-content">
+                <h4>Reading the Heartbeat</h4>
+                <p>The heartbeat visualization mimics a medical ECG monitor to give you an immediate, intuitive sense of
+                    system health:</p>
+
+                <div class="doc-status-list">
+                    <div class="doc-status-item healthy">
+                        <span class="status-icon"><i class="fa-solid fa-circle"></i></span>
+                        <div>
+                            <strong>Healthy</strong>
+                            <p>Strong, regular ECG waveform. Your system is handling the load well. Error rate below
+                                10%.</p>
+                        </div>
+                    </div>
+                    <div class="doc-status-item warning">
+                        <span class="status-icon"><i class="fa-solid fa-circle"></i></span>
+                        <div>
+                            <strong>Degraded</strong>
+                            <p>Irregular rhythm. Errors between 10-50%. Your system is struggling — consider reducing
+                                load or investigating bottlenecks.</p>
+                        </div>
+                    </div>
+                    <div class="doc-status-item critical">
+                        <span class="status-icon"><i class="fa-solid fa-circle"></i></span>
+                        <div>
+                            <strong>Critical / Flatline</strong>
+                            <p>Weak or flat signal. Error rate exceeds 50%. Your system may be overwhelmed or
+                                unresponsive.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="doc-tip">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <span><strong>BPM (Beats Per Minute)</strong> is derived from your RPS. A higher BPM means more
+                        throughput — but only if error rates stay low.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metrics Explained -->
+        <div class="doc-card" data-doc="metrics">
+            <div class="doc-card-header">
+                <i class="fa-solid fa-chart-bar"></i>
+                <h3>Metrics Explained</h3>
+            </div>
+            <p>Understanding throughput, latency, error rates, and success rates</p>
+            <button class="doc-expand-btn">
+                <span>Read more</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="doc-card-content">
+                <h4>Key Metrics</h4>
+
+                <h4><i class="fa-solid fa-gauge-high"></i> Throughput (RPS)</h4>
+                <p>Requests per second — the number of requests your system is handling. Higher is better, but only when
+                    paired with low error rates. Watch for plateaus that indicate bottlenecks.</p>
+
+                <h4><i class="fa-solid fa-circle-check"></i> Success Rate</h4>
+                <p>Percentage of requests that returned successfully (HTTP 2xx/3xx). Aim for 99%+ in production. Drops
+                    below 95% warrant investigation.</p>
+
+                <h4><i class="fa-solid fa-triangle-exclamation"></i> Error Rate</h4>
+                <p>Failed requests as a percentage. Common causes: timeouts, connection refused, 5xx responses. A sudden
+                    spike often indicates your system has hit a limit.</p>
+
+                <h4><i class="fa-solid fa-microchip"></i> Latency (ms)</h4>
+                <ul>
+                    <li><strong>Avg:</strong> Mean response time. Useful for general trends but can hide outliers</li>
+                    <li><strong>Min/Max:</strong> Fastest and slowest requests. Large gaps suggest intermittent issues
+                    </li>
+                    <li><strong>P99:</strong> 99th percentile — 99% of requests were faster than this. The metric that
+                        matters most for user experience</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- CLI & CI/CD -->
+        <div class="doc-card" data-doc="cli">
+            <div class="doc-card-header">
+                <i class="fa-solid fa-terminal"></i>
+                <h3>CLI & CI/CD Integration</h3>
+            </div>
+            <p>Run Axion headlessly in your pipelines and automate stress testing</p>
+            <button class="doc-expand-btn">
+                <span>Read more</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="doc-card-content">
+                <h4>Headless Mode (Coming Soon)</h4>
+                <p>Axion will support running without the browser UI for automated testing scenarios:</p>
+
+                <div class="doc-code-block">
+                    <div class="code-header">
+                        <span>Terminal</span>
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i></button>
+                    </div>
+                    <pre><code># Run a 30-second stress test with 100 workers
+axion test --url https://api.example.com \
+  --concurrency 100 \
+  --delay 50ms \
+  --duration 30s \
+  --output results.json
+
+# CI/CD pipeline example (GitHub Actions)
+- name: Stress Test
+  run: |
+    axion test --url ${{ secrets.API_URL }} \
+      --concurrency 200 \
+      --duration 60s \
+      --threshold-error-rate 5 \
+      --exit-on-failure</code></pre>
+                </div>
+
+                <h4>Exit Codes</h4>
+                <div class="doc-table-wrapper">
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>0</td>
+                                <td>All thresholds passed</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>Error rate exceeded threshold</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>P99 latency exceeded threshold</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Connection failure</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configuration Reference -->
+        <div class="doc-card" data-doc="config">
+            <div class="doc-card-header">
+                <i class="fa-solid fa-gear"></i>
+                <h3>Configuration Reference</h3>
+            </div>
+            <p>Complete reference for all test parameters and their effects</p>
+            <button class="doc-expand-btn">
+                <span>Read more</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="doc-card-content">
+                <h4>Test Parameters</h4>
+                <div class="doc-table-wrapper">
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>targetUrl</code></td>
+                                <td>URL</td>
+                                <td>—</td>
+                                <td>The endpoint to send requests to. Must be a valid HTTP/HTTPS URL.</td>
+                            </tr>
+                            <tr>
+                                <td><code>concurrency</code></td>
+                                <td>Number</td>
+                                <td>10</td>
+                                <td>Number of simultaneous workers. Range: 1-1000.</td>
+                            </tr>
+                            <tr>
+                                <td><code>requestDelayMs</code></td>
+                                <td>Number</td>
+                                <td>100</td>
+                                <td>Milliseconds between requests per worker. 0 = no delay.</td>
+                            </tr>
+                            <tr>
+                                <td><code>durationSecs</code></td>
+                                <td>Number</td>
+                                <td>0</td>
+                                <td>Test duration in seconds. 0 = run until manually stopped.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>Best Practices</h4>
+                <ul>
+                    <li><strong>Start small:</strong> Begin with low concurrency and gradually increase</li>
+                    <li><strong>Monitor your own resources:</strong> Generating load consumes CPU/Memory too</li>
+                    <li><strong>Test in isolation:</strong> Run against staging environments, not production</li>
+                    <li><strong>Set duration limits:</strong> Prevent accidental infinite tests in CI/CD</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="docs-footer-note">
+        <i class="fa-solid fa-code"></i>
+        <span>Axion is open source. Contribute on <a href="https://github.com/toyosee" target="_blank">GitHub <i
+                    class="fa-solid fa-arrow-up-right-from-square"></i></a></span>
+    </div>
+</div>
+
+            <!-- Main Content Footer -->
+            <footer class="content-footer">
+                <div class="footer-stats">
+                    <div class="footer-stat">
+                        <i class="fa-solid fa-globe"></i>
+                        <span>Engine: Go</span>
+                    </div>
+                    <div class="footer-stat">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>WebSocket Live Feed</span>
+                    </div>
+                    <div class="footer-stat">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>SSL Ready</span>
+                    </div>
+                </div>
+                <div class="footer-info">
+                    <span>Developed By Barterverse Technologies. Ltd.</span>
+                    <span class="footer-separator">•</span>
+                    <span id="connectionStatus">
+                        <i class="fa-solid fa-circle connection-dot"></i>
+                        Connecting...
+                    </span>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

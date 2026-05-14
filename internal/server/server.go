@@ -1,3 +1,8 @@
+// Package server implements the main HTTP and WebSocket server for Axion
+// It handles incoming requests to start/stop tests, serves test history, 
+// and manages WebSocket connections for real-time updates.
+// Author: Elijah Abolaji (tyabolaji@gmail.com)
+
 package server
 
 import (

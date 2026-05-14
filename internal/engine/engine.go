@@ -1,3 +1,8 @@
+// Package engine implements the core load testing logic, 
+// including worker management, request execution, and 
+// real-time statistics tracking.
+// Author: Elijah Abolaji (tyabolaji@gmail.com)
+
 package engine
 
 import (

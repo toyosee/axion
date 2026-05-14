@@ -1,3 +1,13 @@
+// This file contains the WebSocket hub and client management 
+// logic for Axion's real-time dashboard updates. 
+// It defines the Hub struct that manages connected clients, 
+// broadcasting messages, and client registration/unregistration. 
+// The Client struct represents individual WebSocket connections and 
+// handles reading/writing messages. The Message struct is a generic 
+// envelope for all WebSocket messages sent to clients, allowing for 
+// different message types (stats, vitals, status, error).
+// Author: Elijah Abolaji (tyabolaji@gmail.com)
+
 package ws
 
 import (
@@ -19,6 +29,7 @@ const (
 // Message types sent to clients
 type MessageType string
 
+// Define message types for WebSocket communication
 const (
 	TypeStats  MessageType = "stats"
 	TypeVitals MessageType = "vitals"

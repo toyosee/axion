@@ -1,3 +1,8 @@
+// Package monitor provides a simple way to track system resource usage 
+// such as CPU and memory. It periodically samples these vitals and can 
+// invoke a callback with the latest data.
+// Author: Elijah Abolaji (tyabolaji@gmail.com)
+
 package monitor
 
 import (
